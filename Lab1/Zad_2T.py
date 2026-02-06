@@ -2,26 +2,32 @@ import numpy as np
 import tensorflow as tf
 
 
-def rotate_points_tf(points, angle_rad):
+def rotacja_punktów_tf( punkty, kat_rad):
+    """
+     punkty = tf.convert_to_tensor( punkty, dtype=tf.float32)
+    kat_rad = tf.cast(kat_rad,  punkty.dtype)
 
-    c = tf.cos(angle_rad)
-    s = tf.sin(angle_rad)
-    rotation_matrix = tf.reshape(tf.stack([c, -s, s, c]), (2, 2))
+    """
 
-    if len(points.shape) == 1:
-        return tf.linalg.matvec(rotation_matrix, points)
+    c = tf.cos(kat_rad)
+    s = tf.sin(kat_rad)
+    rotacja_matrix = tf.reshape(tf.stack([c, -s, s, c]), (2, 2))
+
+    if len( punkty.shape) == 1:
+        return tf.linalg.matvec(rotacja_matrix, punkty)
     else:
-        return tf.transpose(rotation_matrix @ tf.transpose(points))
+        return tf.transpose(rotacja_matrix @ tf.transpose( punkty))
 
 
-points = tf.constant([[1.0, 0.0], [0.0, 1.0]], dtype=tf.float32)
-angle = np.pi / 2
-rotated_points = rotate_points_tf(points, angle)
-print("TensorFlow rotated points:\n", rotated_points.numpy())
+punkty = tf.constant([[1.0, 0.0], [0.0, 1.0]], dtype=tf.float32)
+kat_rad = tf.constant(np.pi / 2, dtype=tf.float32)
+zrotowane_punkty = rotacja_punktów_tf(punkty, kat_rad)
+print("TensorFlow zrotowane punkty:\n", zrotowane_punkty.numpy())
+print(tf.round(zrotowane_punkty * 1e6) / 1e6)
 
 
-expected_points = np.array([[0.0, 1.0], [-1.0, 0.0]])
+oczekiwane_punkty = np.array([[0.0, 1.0], [-1.0, 0.0]])
 assert np.allclose(
-    rotated_points.numpy(), expected_points, atol=1e-7
+    zrotowane_punkty.numpy(), oczekiwane_punkty, atol=1e-7
 ), "Test TensorFlow nie przeszedł!"
 print("Test TensorFlow dla wielu punktów przeszedł pomyślnie!")

@@ -15,12 +15,12 @@ def rotate_point_np(point, angle_rad):
 point = np.array([1.0, 0.0])
 angle = np.pi / 2
 
-rotated_point_np = rotate_point_np(point, angle)
-print("NumPy rotated point:", rotated_point_np)
+rotated_point_np1 = rotate_point_np(point, angle)
+print("NumPy rotated point:", rotated_point_np1)
 
 
 expected_point = np.array([0.0, 1.0])
 assert np.allclose(
-    rotated_point_np, expected_point, atol=1e-7
+    rotated_point_np1, expected_point, atol=1e-7
 ), "Test NumPy nie przeszedł!"
 print("Test przeszedł pomyślnie!")
